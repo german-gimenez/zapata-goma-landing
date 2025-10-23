@@ -1,13 +1,11 @@
-// Efectos visuales y animaciones para la landing page brutalista
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // Efecto de glitch en el título principal
+    // Efecto glitch para el título
     function createGlitchEffect() {
         const title = document.querySelector('.hero-title');
         const titleLines = document.querySelectorAll('.title-line');
         
         setInterval(() => {
-            if (Math.random() < 0.1) { // 10% de probabilidad cada segundo
+            if (Math.random() < 0.1) {
                 titleLines.forEach(line => {
                     line.style.transform += ' translateX(' + (Math.random() * 10 - 5) + 'px)';
                     line.style.filter = 'hue-rotate(' + (Math.random() * 360) + 'deg)';
@@ -20,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 1000);
     }
-    
-    // Efecto de movimiento de formas geométricas
+
+    // Animación de formas geométricas
     function animateShapes() {
         const shapes = document.querySelectorAll('.shape');
         const bgShapes = document.querySelectorAll('.bg-shape');
@@ -40,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 3000 + index * 1000);
         });
     }
-    
-    // Efecto de parallax en elementos de fondo
+
+    // Efecto parallax
     function parallaxEffect() {
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
@@ -49,70 +47,48 @@ document.addEventListener('DOMContentLoaded', function() {
             
             bgShapes.forEach((shape, index) => {
                 const speed = 0.5 + index * 0.2;
-                shape.style.transform += ` translateY(${scrolled * speed}px)`;
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
             });
         });
     }
-    
-    // Efecto de hover brutal en las tarjetas
+
+    // Efectos hover brutalistas
     function brutalistHoverEffects() {
         const cards = document.querySelectorAll('.info-card');
         
         cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'rotate(0deg) scale(1.1)';
-                this.style.boxShadow = '15px 15px 0px #FF6A00, 30px 30px 0px #000000';
-                this.style.transition = 'all 0.2s ease';
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translate(-8px, -8px) rotate(1deg)';
+                card.style.boxShadow = '12px 12px 0px #FF6A00';
             });
             
-            card.addEventListener('mouseleave', function() {
-                const originalRotation = this.dataset.rotation || '-1deg';
-                this.style.transform = `rotate(${originalRotation}) scale(1)`;
-                this.style.boxShadow = '8px 8px 0px #FF6A00';
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translate(0, 0) rotate(0deg)';
+                card.style.boxShadow = '8px 8px 0px #FF6A00';
             });
         });
     }
-    
-    // Efecto de escritura para el subtítulo
+
+    // Efecto typewriter
     function typewriterEffect() {
         const subtitle = document.querySelector('.hero-subtitle');
-        const text1 = 'UNA NUEVA EXPERIENCIA';
-        const text2 = 'ESTÁ LLEGANDO';
-        
         if (subtitle) {
-            subtitle.innerHTML = '';
-            
+            const text = subtitle.textContent;
+            subtitle.textContent = '';
             let i = 0;
-            const typeWriter1 = () => {
-                if (i < text1.length) {
-                    subtitle.innerHTML += text1.charAt(i);
-                    i++;
-                    setTimeout(typeWriter1, 100);
-                } else {
-                    subtitle.innerHTML += '<br>';
-                    setTimeout(() => {
-                        let j = 0;
-                        const typeWriter2 = () => {
-                            if (j < text2.length) {
-                                subtitle.innerHTML += text2.charAt(j);
-                                j++;
-                                setTimeout(typeWriter2, 100);
-                            } else {
-                                // Añadir clase highlight al segundo texto
-                                const lines = subtitle.innerHTML.split('<br>');
-                                subtitle.innerHTML = `<p>${lines[0]}</p><p class="highlight">${lines[1]}</p>`;
-                            }
-                        };
-                        typeWriter2();
-                    }, 500);
-                }
-            };
             
-            setTimeout(typeWriter1, 2000); // Esperar a que termine la animación del título
+            const typeInterval = setInterval(() => {
+                if (i < text.length) {
+                    subtitle.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                }
+            }, 100);
         }
     }
-    
-    // Efecto de cursor personalizado
+
+    // Cursor personalizado
     function customCursor() {
         const cursor = document.createElement('div');
         cursor.className = 'custom-cursor';
@@ -120,8 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             position: fixed;
             width: 20px;
             height: 20px;
-            background-color: #FF6A00;
-            border: 2px solid #000000;
+            background: #FF6A00;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
@@ -129,138 +104,360 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: transform 0.1s ease;
         `;
         document.body.appendChild(cursor);
-        
-        document.addEventListener('mousemove', (e) => {
+
+        document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX - 10 + 'px';
             cursor.style.top = e.clientY - 10 + 'px';
         });
-        
-        // Efecto en elementos interactivos
-        const interactiveElements = document.querySelectorAll('a, button, .info-card, .logo-text');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursor.style.backgroundColor = '#000000';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.backgroundColor = '#FF6A00';
-            });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(1.5)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
         });
     }
-    
-    // Efecto de vibración en elementos
-    function vibrateElements() {
-        const vibrateElements = document.querySelectorAll('.title-line.accent');
+
+    // Efectos de vibración
+    function vibrationEffects() {
+        const elements = document.querySelectorAll('.info-card, .logo-favicon');
         
-        vibrateElements.forEach(element => {
-            setInterval(() => {
-                if (Math.random() < 0.05) { // 5% de probabilidad
-                    element.style.animation = 'vibrate 0.3s ease-in-out';
-                    setTimeout(() => {
-                        element.style.animation = 'pulse 2s infinite alternate';
-                    }, 300);
+        elements.forEach(element => {
+            element.addEventListener('click', () => {
+                if (navigator.vibrate) {
+                    navigator.vibrate([50, 30, 50]);
                 }
-            }, 1000);
+                
+                element.style.animation = 'none';
+                element.offsetHeight; // Trigger reflow
+                element.style.animation = 'pulse 0.3s ease-in-out';
+            });
         });
     }
-    
-    // Añadir animación de vibración al CSS
-    const vibrateKeyframes = `
-        @keyframes vibrate {
-            0% { transform: skew(3deg) scale(1) translateX(0); }
-            25% { transform: skew(3deg) scale(1.02) translateX(-2px); }
-            50% { transform: skew(3deg) scale(1) translateX(2px); }
-            75% { transform: skew(3deg) scale(1.02) translateX(-1px); }
-            100% { transform: skew(3deg) scale(1) translateX(0); }
-        }
-    `;
-    
-    const style = document.createElement('style');
-    style.textContent = vibrateKeyframes;
-    document.head.appendChild(style);
-    
-    // Efecto de carga progresiva
-    function progressiveLoad() {
-        const elements = document.querySelectorAll('.info-card, .shape, .footer-shape');
+
+    // Carga progresiva
+    function progressiveLoading() {
+        const elements = document.querySelectorAll('.info-card, .hero-title, .hero-subtitle');
         
         elements.forEach((element, index) => {
             element.style.opacity = '0';
-            element.style.transform += ' translateY(50px)';
+            element.style.transform = 'translateY(30px)';
             
             setTimeout(() => {
-                element.style.transition = 'all 0.6s ease-out';
+                element.style.transition = 'all 0.8s ease-out';
                 element.style.opacity = '1';
-                element.style.transform = element.style.transform.replace('translateY(50px)', 'translateY(0)');
-            }, 3000 + index * 200);
+                element.style.transform = 'translateY(0)';
+            }, index * 200);
         });
     }
-    
-    // Inicializar todos los efectos
+
+    // Animación de entrada del logo
+    function logoEntranceAnimation() {
+        const logo = document.querySelector('.logo-favicon');
+        if (logo) {
+            logo.style.transform = 'translateX(-100px) rotate(-45deg)';
+            logo.style.opacity = '0';
+            
+            setTimeout(() => {
+                logo.style.transition = 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                logo.style.transform = 'translateX(0) rotate(0deg)';
+                logo.style.opacity = '1';
+            }, 500);
+        }
+    }
+
+    // Scroll suave
+    function smoothScrolling() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+
+    // Optimizaciones móviles
+    function mobileOptimizations() {
+        if (window.innerWidth <= 768) {
+            const shapes = document.querySelectorAll('.geometric-shape');
+            shapes.forEach(shape => {
+                shape.style.opacity = '0.03';
+            });
+            
+            const parallaxElements = document.querySelectorAll('.bg-element');
+            parallaxElements.forEach(element => {
+                element.style.animation = 'none';
+            });
+        }
+    }
+
+    // Carrusel de Categorías
+    function initCategoryCarousel() {
+        const track = document.querySelector('.carousel-track');
+        const cards = document.querySelectorAll('.category-card');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const indicators = document.querySelectorAll('.indicator');
+        
+        if (!track || !cards.length) return;
+        
+        let currentSlide = 0;
+        const totalSlides = cards.length;
+        let isAnimating = false;
+        let autoSlideInterval;
+        
+        // Función para actualizar la posición del carrusel
+        function updateCarousel() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            const translateX = -currentSlide * 100;
+            track.style.transform = `translateX(${translateX}%)`;
+            
+            // Actualizar indicadores
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Actualizar números de categoría
+            cards.forEach((card, index) => {
+                const numberElement = card.querySelector('.category-number');
+                if (numberElement) {
+                    numberElement.textContent = `${index + 1} / ${totalSlides}`;
+                }
+            });
+            
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600);
+        }
+        
+        // Función para ir al siguiente slide
+        function nextSlide() {
+            if (isAnimating) return;
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+        
+        // Función para ir al slide anterior
+        function prevSlide() {
+            if (isAnimating) return;
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+        
+        // Función para ir a un slide específico
+        function goToSlide(slideIndex) {
+            if (isAnimating || slideIndex === currentSlide) return;
+            currentSlide = slideIndex;
+            updateCarousel();
+        }
+        
+        // Event listeners para los botones
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetAutoSlide();
+            });
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetAutoSlide();
+            });
+        }
+        
+        // Event listeners para los indicadores
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                goToSlide(index);
+                resetAutoSlide();
+            });
+        });
+        
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                resetAutoSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                resetAutoSlide();
+            }
+        });
+        
+        // Touch/Swipe support
+        let startX = 0;
+        let endX = 0;
+        
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        track.addEventListener('touchmove', (e) => {
+            endX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        track.addEventListener('touchend', () => {
+            const threshold = 50;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                resetAutoSlide();
+            }
+        }, { passive: true });
+        
+        // Auto-slide functionality
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                nextSlide();
+            }, 5000); // Cambiar cada 5 segundos
+        }
+        
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+        
+        function resetAutoSlide() {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+        
+        // Pausar auto-slide cuando el mouse está sobre el carrusel
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (carouselContainer) {
+            carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+            carouselContainer.addEventListener('mouseleave', startAutoSlide);
+        }
+        
+        // Pausar auto-slide cuando la página no está visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoSlide();
+            } else {
+                startAutoSlide();
+            }
+        });
+        
+        // Inicializar
+        updateCarousel();
+        startAutoSlide();
+        
+        // Intersection Observer para animaciones cuando el carrusel entra en vista
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    startAutoSlide();
+                } else {
+                    stopAutoSlide();
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        if (carouselContainer) {
+            observer.observe(carouselContainer);
+        }
+    }
+
+    // Función para la animación Flip Words
+    function initFlipWords() {
+        const flipWords = document.querySelectorAll('.flip-word');
+        if (!flipWords.length) return;
+
+        let currentIndex = 0;
+        const totalWords = flipWords.length;
+        const flipInterval = 3000; // 3 segundos entre cambios
+
+        function flipToNext() {
+            // Remover clase active del elemento actual
+            flipWords[currentIndex].classList.remove('active');
+            flipWords[currentIndex].classList.add('exit');
+            
+            // Después de la animación de salida, cambiar al siguiente
+            setTimeout(() => {
+                flipWords[currentIndex].classList.remove('exit');
+                
+                // Mover al siguiente índice
+                currentIndex = (currentIndex + 1) % totalWords;
+                
+                // Activar el siguiente elemento
+                flipWords[currentIndex].classList.add('active');
+            }, 300); // Mitad de la duración de la transición CSS
+        }
+
+        // Inicializar el primer elemento como activo
+        flipWords[0].classList.add('active');
+
+        // Comenzar la animación automática
+        const flipTimer = setInterval(flipToNext, flipInterval);
+
+        // Pausar animación cuando la página no está visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(flipTimer);
+            } else {
+                // Reiniciar el timer cuando la página vuelve a ser visible
+                setTimeout(() => {
+                    setInterval(flipToNext, flipInterval);
+                }, 1000);
+            }
+        });
+
+        // Intersection Observer para activar solo cuando está en vista
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Reactivar animación cuando entra en vista
+                    if (!flipWords[currentIndex].classList.contains('active')) {
+                        flipWords[currentIndex].classList.add('active');
+                    }
+                } else {
+                    // Pausar cuando sale de vista
+                    flipWords.forEach(word => {
+                        word.classList.remove('active', 'exit');
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const flipContainer = document.querySelector('.flip-words-container');
+        if (flipContainer) {
+            observer.observe(flipContainer);
+        }
+    }
+
+    // Inicializar todas las funciones
     createGlitchEffect();
     animateShapes();
     parallaxEffect();
     brutalistHoverEffects();
-    // typewriterEffect(); // Comentado para mantener el HTML original
+    typewriterEffect();
     customCursor();
-    vibrateElements();
-    progressiveLoad();
-    
-    // Efecto de entrada para el logo
-    const logo = document.querySelector('.logo-text');
-    if (logo) {
-        logo.style.transform = 'rotate(-5deg) scale(0)';
-        setTimeout(() => {
-            logo.style.transition = 'transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            logo.style.transform = 'rotate(-5deg) scale(1)';
-        }, 500);
-    }
-    
-    // Efecto de scroll suave
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    // Detectar dispositivos móviles y ajustar efectos
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-        // Reducir efectos en móviles para mejor rendimiento
-        document.querySelector('.custom-cursor')?.remove();
-        
-        // Simplificar animaciones en móviles
-        const shapes = document.querySelectorAll('.shape, .bg-shape');
-        shapes.forEach(shape => {
-            shape.style.animation = 'none';
-        });
-    }
-    
-    // Optimización de rendimiento
-    let ticking = false;
-    function updateAnimations() {
-        // Aquí se pueden añadir animaciones que necesiten ser actualizadas en cada frame
-        ticking = false;
-    }
-    
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(updateAnimations);
-            ticking = true;
-        }
-    }
-    
-    // Event listeners optimizados
-    window.addEventListener('scroll', requestTick);
-    window.addEventListener('resize', requestTick);
-    
-    console.log('🔥 Landing page brutalista de Zapata Goma cargada correctamente');
+    vibrationEffects();
+    progressiveLoading();
+    logoEntranceAnimation();
+    smoothScrolling();
+    initCategoryCarousel();
+    initFlipWords();
+    mobileOptimizations();
+
+    // Reinicializar optimizaciones móviles en resize
+    window.addEventListener('resize', mobileOptimizations);
 });
